@@ -1,0 +1,55 @@
+namespace: skill-app
+
+# =====================
+# MySQL Configuration
+# =====================
+mysql:
+  image: mysql:8.0
+  rootPassword: password
+  database: skilldb
+  service:
+    port: 3306
+    type: ClusterIP   # Only accessible inside the cluster
+
+# =====================
+# Backend Configuration
+# =====================
+backend:
+  image: veeramachanenijayathi/helmskillbackend:latest
+  replicas: 2
+  port: 2006
+  nodePort: 30000
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+
+# =====================
+# Frontend Configuration
+# =====================
+frontend:
+  image: veeramachanenijayathi/helmskillfrontend:latest
+  replicas: 2
+  port: 80
+  nodePort: 30007
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+  apiUrl: "http://localhost:30000"  # Backend NodePort
