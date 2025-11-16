@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Style.css';
+<<<<<<< HEAD
 import config from './config.js';
+=======
+>>>>>>> 519a7071b73cc9b755410aceac201b68f1c8958f
 
 const SkillManager = () => {
   const [skills, setSkills] = useState([]);
